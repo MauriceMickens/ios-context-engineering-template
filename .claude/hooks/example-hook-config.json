@@ -1,0 +1,14 @@
+{
+  "appScheme": "YOUR_APP_SCHEME_HERE",
+  "uiTestBundle": "",
+  "simulatorDevice": "iPhone 15",
+  "ci": {
+    "useGitHubActions": true,
+    "workflows": [".github/workflows/ci.yml"]
+  },
+  "github": {
+    "repo": "your-org/your-repo",
+    "defaultBranch": "main",
+    "useIssues": true
+  }
+}

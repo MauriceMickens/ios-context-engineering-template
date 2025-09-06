@@ -1,0 +1,56 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Run all validation gates"
+  lane :validate do
+    lint
+    test
+    a11y_check
+    perf_smoke  
+    privacy_scan
+  end
+
+  desc "Run SwiftLint"
+  lane :lint do
+    swiftlint(
+      strict: true,
+      reporter: "emoji"
+    )
+  end
+
+  desc "Run tests"
+  lane :test do
+    run_tests(
+      project: "context-eng-template.xcodeproj",
+      scheme: "context-eng-template",
+      destination: "platform=iOS Simulator,name=iPhone 15",
+      code_coverage: true
+    )
+  end
+
+  desc "Build for testing"
+  lane :build do
+    build_app(
+      project: "context-eng-template.xcodeproj",
+      scheme: "context-eng-template",
+      destination: "generic/platform=iOS Simulator",
+      skip_package_ipa: true,
+      skip_codesigning: true
+    )
+  end
+
+  desc "Run accessibility checks"
+  lane :a11y_check do
+    sh("../scripts/a11y_check.sh")
+  end
+
+  desc "Run performance smoke tests"
+  lane :perf_smoke do
+    sh("../scripts/perf_smoke.sh")
+  end
+
+  desc "Run privacy scan"
+  lane :privacy_scan do
+    sh("../scripts/privacy_scan.sh")
+  end
+end
